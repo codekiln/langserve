@@ -4,6 +4,7 @@ state back and forth between server and client.
 """
 from typing import List, Union
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from langchain_anthropic.chat_models import ChatAnthropic
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
@@ -12,12 +13,13 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langserve import add_routes
 from langserve.pydantic_v1 import BaseModel, Field
 
+load_dotenv()
+
 app = FastAPI(
     title="LangChain Server",
     version="1.0",
     description="Spin up a simple api server using Langchain's Runnable interfaces",
 )
-
 
 # Declare a chain
 prompt = ChatPromptTemplate.from_messages(

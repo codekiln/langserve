@@ -21,12 +21,15 @@ from langchain_openai import ChatOpenAI
 from langserve import CustomUserType
 from langserve.server import add_routes
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 app = FastAPI(
     title="LangChain Server",
     version="1.0",
     description="Spin up a simple api server using Langchain's Runnable interfaces",
 )
-
 
 # Set all CORS enabled origins
 app.add_middleware(
@@ -37,6 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
 
 # Example 1: Chat Widget
 # This shows how to create a chat widget.
@@ -111,6 +115,7 @@ add_routes(
     config_keys=["configurable"],
     path="/chat_message",
 )
+
 
 # Example 3: File Processing Widget
 

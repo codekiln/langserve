@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 from typing import Callable, Union
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from langchain_anthropic import ChatAnthropic
 from langchain_community.chat_message_histories import FileChatMessageHistory
@@ -21,6 +22,8 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 from langserve import add_routes
 from langserve.pydantic_v1 import BaseModel, Field
+
+load_dotenv()
 
 
 def _is_valid_identifier(value: str) -> bool:
@@ -76,7 +79,7 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-chain = prompt | ChatAnthropic(model="claude-2")
+chain = prompt | ChatAnthropic(model="claude-2.1")
 
 
 class InputChat(BaseModel):
