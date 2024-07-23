@@ -13,11 +13,12 @@ from operator import itemgetter
 from typing import List, Tuple
 
 from fastapi import FastAPI
+from langchain_community.embeddings import BedrockEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate, format_document
 from langchain_core.runnables import RunnableMap, RunnablePassthrough
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI, AzureChatOpenAI
 
 from langserve import add_routes
 from langserve.pydantic_v1 import BaseModel, Field
@@ -60,7 +61,7 @@ def _format_chat_history(chat_history: List[Tuple]) -> str:
 
 
 vectorstore = FAISS.from_texts(
-    ["harrison worked at kensho"], embedding=OpenAIEmbeddings()
+    ["harrison worked at kensho"], embedding=BedrockEmbeddings()
 )
 retriever = vectorstore.as_retriever()
 
@@ -90,7 +91,7 @@ class ChatHistory(BaseModel):
 
 
 conversational_qa_chain = (
-    _inputs | _context | ANSWER_PROMPT | ChatOpenAI() | StrOutputParser()
+    _inputs | _context | ANSWER_PROMPT | AzureChatOpenAI() | StrOutputParser()
 )
 chain = conversational_qa_chain.with_types(input_type=ChatHistory)
 
